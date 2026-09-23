@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fiorella UI · Vitrine</title>
+<!-- Login Fiorella: supabase-js + guard da Central de Acesso (chave "ui") -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script src="https://textilegroup.github.io/wendell-users/guard.js" data-app="ui" data-tema="nao"></script>
+<!-- Design system: mesmo arquivo que as outras ferramentas carregam -->
+<script src="fiorella-ui.js" defer></script>
+<style>
+  .vt-code{font:12px/1.5 ui-monospace,Consolas,monospace;background:var(--fi-surface-alt);border:1px solid var(--fi-line);border-radius:8px;padding:12px;overflow-x:auto;white-space:pre;margin:0}
+  .vt-row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+  .vt-sec{margin-top:18px}
+</style>
+</head>
+<body>
+<header class="fi-topbar">
+  <a class="fi-brand" href="#"><img data-fi-logo></a>
+  <nav class="fi-nav" id="nav">
+    <a href="#instalar" class="fi-active">Instalação</a>
+    <a href="#componentes">Componentes</a>
+    <a href="#tabela">Tabela</a>
+  </nav>
+  <div class="fi-topbar__actions">
+    <button class="fi-icon-btn" data-fi-theme-toggle data-fi-tooltip="Tema claro/escuro" aria-label="Alternar tema">◐</button>
+    <button class="fi-icon-btn fi-mobile-menu" data-fi-menu-toggle="#nav" aria-label="Menu">☰</button>
+  </div>
+</header>
+
+<main class="fi-page">
+  <div class="fi-page-head">
+    <div>
+      <div class="fi-eyebrow">Design system</div>
+      <h1 class="fi-title" data-fi-page-title>Fiorella UI</h1>
+      <p class="fi-subtitle">Referência visual oficial dos HTMLs Fiorella. Alterou aqui, altera em todas as ferramentas.</p>
+    </div>
+  </div>
+
+  <section id="instalar" class="fi-card">
+    <div class="fi-card__head"><div class="fi-card__title">Como usar numa ferramenta</div></div>
+    <div class="fi-card__body">
+      <pre class="vt-code">&lt;script src="https://textilegroup.github.io/fiorella-ui/fiorella-ui.js" defer&gt;&lt;/script&gt;</pre>
+      <p class="fi-card__note">Para forçar atualização imediata do cache, acrescente <code>?v=1.3.3</code> ao endereço quando publicar uma versão nova.</p>
+    </div>
+  </section>
+
+  <section id="componentes" class="vt-sec">
+    <div class="fi-grid fi-grid--4">
+      <div class="fi-card fi-metric fi-metric--brand"><div class="fi-metric__top"><span>Faturamento</span><span class="fi-badge fi-badge--success">+8%</span></div><div class="fi-metric__value" id="m1"></div><div class="fi-metric__foot">mês atual</div></div>
+      <div class="fi-card fi-metric"><div class="fi-metric__top"><span>Margem</span></div><div class="fi-metric__value" id="m2"></div><div class="fi-metric__foot">média ponderada</div></div>
+      <div class="fi-card fi-metric"><div class="fi-metric__top"><span>Meta</span></div><div class="fi-metric__value">72%</div><div class="fi-progress"><span style="width:72%"></span></div></div>
+      <div class="fi-card fi-metric"><div class="fi-metric__top"><span>Carregando</span></div><div class="fi-skeleton" style="height:28px;margin-top:10px"></div></div>
+    </div>
+
+    <div class="fi-grid fi-grid--2 vt-sec">
+      <div class="fi-card">
+        <div class="fi-card__head"><div class="fi-card__title">Botões, badges e avisos</div></div>
+        <div class="fi-card__body">
+          <div class="vt-row">
+            <button class="fi-btn fi-btn--primary" id="bt-toast">Notificar</button>
+            <button class="fi-btn" id="bt-confirm">Confirmar ação</button>
+            <button class="fi-btn fi-btn--danger" id="bt-danger">Excluir</button>
+          </div>
+          <div class="vt-row vt-sec">
+            <span class="fi-badge fi-badge--success">Aprovado</span>
+            <span class="fi-badge fi-badge--warning">Pendente</span>
+            <span class="fi-badge fi-badge--danger">Recusado</span>
+            <span class="fi-badge fi-badge--info">Em análise</span>
+          </div>
+          <div class="fi-alert fi-alert--warning vt-sec">Exemplo de alerta de atenção.</div>
+        </div>
+      </div>
+      <div class="fi-card">
+        <div class="fi-card__head"><div class="fi-card__title">Formulário</div></div>
+        <div class="fi-card__body fi-filters">
+          <label class="fi-field"><span class="fi-label">Cliente</span><input class="fi-input" placeholder="Nome"></label>
+          <label class="fi-field"><span class="fi-label">Linha</span><select class="fi-select"><option>Needlepunch</option><option>Spunlace</option><option>Resinado</option></select></label>
+          <label class="fi-field fi-field--error"><span class="fi-label">CNPJ</span><input class="fi-input" value="00.000"><span class="fi-field__help">CNPJ incompleto</span></label>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="tabela" class="fi-card vt-sec">
+    <div class="fi-card__head">
+      <div class="fi-card__title">Tabela</div>
+      <button class="fi-btn" data-fi-export="#tb" data-fi-filename="exemplo">Exportar</button>
+    </div>
+    <div class="fi-table-wrap">
+      <table class="fi-table" id="tb">
+        <thead><tr><th>Produto</th><th>Data</th><th>Status</th><th style="text-align:right">Valor</th></tr></thead>
+        <tbody id="tb-body"></tbody>
+      </table>
+    </div>
+  </section>
+</main>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const UI = window.FiorellaUI;
+  if (!UI) return;
+  document.getElementById('m1').textContent = UI.formatCurrency(1284500);
+  document.getElementById('m2').textContent = UI.formatPercent(0.184, 1);
+  const linhas = [
+    ['Manta agulhada 200 g/m²', '2026-09-02', 'success', 'Faturado', 48210.5],
+    ['Entretela 30 g/m²', '2026-09-10', 'warning', 'Pendente', 12980],
+    ['Spunlace 45 g/m²', '2026-09-18', 'info', 'Em análise', 7340.9]
+  ];
+  document.getElementById('tb-body').innerHTML = linhas.map(l =>
+    `<tr><td>${l[0]}</td><td>${UI.formatDate(l[1])}</td><td><span class="fi-badge fi-badge--${l[2]}">${l[3]}</span></td><td style="text-align:right">${UI.formatCurrency(l[4])}</td></tr>`).join('');
+  document.getElementById('bt-toast').onclick = () => UI.notify('Registro salvo', { type: 'success' });
+  document.getElementById('bt-confirm').onclick = async () => UI.notify((await UI.confirm({ message: 'Aplicar a alteração?' })) ? 'Confirmado' : 'Cancelado');
+  document.getElementById('bt-danger').onclick = async () => {
+    if (await UI.confirm({ title: 'Excluir', message: 'Esta ação não pode ser desfeita.', confirmText: 'Excluir', danger: true })) UI.notify('Excluído', { type: 'danger' });
+  };
+});
+</script>
+</body>
+</html>
